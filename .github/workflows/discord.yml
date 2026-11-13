@@ -1,0 +1,61 @@
+name: Discord beta notices
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      DISCORD_UPDATES_WEBHOOK: ${{ secrets.DISCORD_UPDATES_WEBHOOK }}
+      DISCORD_CHANGELOG_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
+      DISCORD_GIT_LOG_WEBHOOK: ${{ secrets.DISCORD_GIT_LOG_WEBHOOK }}
+    steps:
+      - name: Send English Discord notices
+        shell: bash
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from "node:fs";
+          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+          const clean = (value) => String(value ?? "").replace(/@/g, "@\u200b");
+          const send = async (url, title, description, page) => {
+            if (!url) return;
+            if (!/^https:\/\/discord\.com\/api\/webhooks\/\d{17,20}\/[\w.-]+$/.test(url))
+              throw new Error("Use a Discord channel webhook URL.");
+            const response = await fetch(url, {
+              method: "POST", redirect: "error", signal: AbortSignal.timeout(12000),
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                allowed_mentions: { parse: [] },
+                embeds: [{
+                  title, description, url: page, color: 0xb78aff,
+                  footer: { text: "Rulify Beta" },
+                }],
+              }),
+            }).catch(() => { throw new Error("Could not reach Discord."); });
+            if (!response.ok) throw new Error(`Discord notice failed (HTTP ${response.status}).`);
+          };
+          if (process.env.GITHUB_EVENT_NAME === "release") {
+            const release = event.release;
+            const version = /^v(\d+\.\d+\.\d+-beta\.\d+)$/.exec(release.tag_name)?.[1];
+            if (!version || release.draft || !release.prerelease ||
+                !release.assets?.some((asset) => asset.name === `Rulify-${version}-Windows-x64-Setup.exe` && asset.state === "uploaded"))
+              process.exit(0);
+            await Promise.all([
+              send(process.env.DISCORD_UPDATES_WEBHOOK, "New Rulify beta", `Rulify ${version} is available for Windows x64.`, release.html_url),
+              send(process.env.DISCORD_CHANGELOG_WEBHOOK, `Rulify ${version} changelog`,
+                clean(release.body).slice(0, 3600) || "Read the release notes on GitHub.", release.html_url),
+            ]);
+          } else if (event.commits?.length && !event.deleted) {
+            const lines = event.commits.slice(0, 8).map((commit) =>
+              `\`${commit.id.slice(0, 7)}\` ${clean(commit.message).split(/\r?\n/, 1)[0].slice(0, 220)}`);
+            if (event.commits.length > lines.length) lines.push(`+ ${event.commits.length - lines.length} more on GitHub.`);
+            await send(process.env.DISCORD_GIT_LOG_WEBHOOK, "Rulify Git log", lines.join("\n"), event.compare);
+          }
+          JS
