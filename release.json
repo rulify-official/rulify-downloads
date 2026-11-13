@@ -1,0 +1,16 @@
+{
+  "tag_name": "v1.7.0-beta.5",
+  "prerelease": true,
+  "draft": false,
+  "published_at": "2026-11-13T19:29:08Z",
+  "body": "Rulify 1.7.0-beta.5\nWindows 10/11 x64\n\nOpen the Windows installer and follow the prompts. Open Rulify from the Start menu.\nTo update, close Rulify and run the new installer. Your existing library and settings are kept.\n\n- Rulify Beta now ships as a Windows installer.\n- Play supported public YouTube tracks without an account or cookie import.\n\nThe installer is unsigned. The download page lists its SHA-256.\n",
+  "assets": [
+    {
+      "name": "Rulify-1.7.0-beta.5-Windows-x64-Setup.exe",
+      "state": "uploaded",
+      "size": 227230031,
+      "digest": "sha256:2e53c77f9cd29b41d27a570d622e71fe538a345b6ac2381810a4c45f175f7376",
+      "browser_download_url": "https://github.com/rulify-official/rulify-downloads/releases/download/v1.7.0-beta.5/Rulify-1.7.0-beta.5-Windows-x64-Setup.exe"
+    }
+  ]
+}
