@@ -1,16 +1,16 @@
 {
-  "tag_name": "v1.7.0-beta.6",
+  "tag_name": "v1.7.0-beta.7",
   "prerelease": true,
   "draft": false,
-  "published_at": "2026-11-13T20:04:53Z",
-  "body": "Rulify 1.7.0-beta.6\nWindows 10/11 x64\n\nDownload and run the installer, then open Rulify from the Start menu.\nTo update, close Rulify and run the new installer. Your library and settings are kept.\n\n- Updated the default Discord application ID used to display what you're listening to.\n- Refreshed the Discord download and service status panels.\n",
+  "published_at": "2026-11-14T10:21:40Z",
+  "body": "Rulify 1.7.0-beta.7\nWindows 10/11 x64\n\nClose Rulify and run the new installer to update. Your library and settings are kept.\n\n- Search now shows songs and videos available on YouTube Music.\n- Updated the microphone icon in the lyrics panel and improved its karaoke label.\n",
   "assets": [
     {
-      "name": "Rulify-1.7.0-beta.6-Windows-x64-Setup.exe",
+      "name": "Rulify-1.7.0-beta.7-Windows-x64-Setup.exe",
       "state": "uploaded",
-      "size": 227230000,
-      "digest": "sha256:bbc8778d8d4b9b05ea2aba6a35abd9a7deb22b34f39aaffb1ae137d95dc8fbdc",
-      "browser_download_url": "https://github.com/rulify-official/rulify-downloads/releases/download/v1.7.0-beta.6/Rulify-1.7.0-beta.6-Windows-x64-Setup.exe"
+      "size": 226923379,
+      "digest": "sha256:b7594a999b6f7984b9a9ce790ddc0d2b14be57fcdb1a3d5219e2aacc98279485",
+      "browser_download_url": "https://github.com/rulify-official/rulify-downloads/releases/download/v1.7.0-beta.7/Rulify-1.7.0-beta.7-Windows-x64-Setup.exe"
     }
   ]
 }
